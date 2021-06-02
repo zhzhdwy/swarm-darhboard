@@ -20,9 +20,19 @@ func (uc *BeeController) nodeStatus(ctx *gin.Context) {
 	bs := service.BeeService{
 		Nodes: config.Nodes,
 	}
-	peers := bs.GetPeers()
+	_, alive, dead := bs.GetAlive()
+	summary := make(map[string]int)
+	summary["length"] = len(config.Nodes)
+	summary["alive"] = alive
+	summary["dead"] = dead
+	//获取peers数量
+	//peers := bs.GetPeers()
+	//获取以太网地址
+	//addresses := bs.GetEAddress()
+	//version := bs.GetVersion()
+	//port := bs.GetPort()
 
 	ctx.HTML(http.StatusOK, "index.tmp", gin.H{
-		"title": peers,
+		"summary": summary,
 	})
 }
